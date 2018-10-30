@@ -1,20 +1,26 @@
 package Projekt02.controller;
 
 import Projekt02.fill.SeedFill;
+import Projekt02.model.Point;
 import Projekt02.renderer.Renderer;
 import Projekt02.view.PGRFWindow;
 import Projekt02.view.Raster;
 
+import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
     private SeedFill seedFill;
     private Raster raster;
     private Renderer renderer;
+    private final List<Point> polygonPoints = new ArrayList<>();
+    private final List<Point> linePoints = new ArrayList<>();
 
     public Controller(PGRFWindow window) {
         initObjects(window);
@@ -34,7 +40,22 @@ public class Controller {
     private void initListeners() {
 
         raster.addMouseListener(new MouseAdapter() {
-            @Override
+
+            public void mousePressed(MouseEvent e) {
+
+                if (e.isControlDown() || e.isShiftDown()) return;
+
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    polygonPoints.add(new Point(e.getX(), e.getY()));
+                    if (polygonPoints.size() == 1) {
+                        polygonPoints.add(new Point(e.getX(), e.getY()));
+                    }
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    linePoints.add(new Point(e.getX(), e.getY()));
+                    linePoints.add(new Point(e.getX(), e.getY()));
+                }
+            }
+
             public void mouseClicked(MouseEvent e) {
                 if (e.isControlDown()) {
                     seedFill.init(e.getX(), e.getY(), 0x00ffff);
@@ -42,17 +63,22 @@ public class Controller {
                 } else {
                     raster.drawPixel(e.getX(), e.getY(), 0xffffff);
                 }
-
-                //points.add(e.getX());
-                //points.add(e.getY());
-                //renderer.drawPolygon(points);
             }
         });
         raster.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                raster.clear();
-                renderer.drawDDA(400, 300, e.getX(), e.getY(), 0xffff00);
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    polygonPoints.get(polygonPoints.size() - 1).x = e.getX();
+                    polygonPoints.get(polygonPoints.size() - 1).y = e.getY();
+                    //zavolame update
+                    update();
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    linePoints.get(linePoints.size() - 1).x = e.getX();
+                    linePoints.get(linePoints.size() - 1).y = e.getY();
+//renderer.drawDDA(400, 300, e.getX(), e.getY(), 0xffff00);
+                }
+                update();
             }
         });
         raster.addKeyListener(new KeyAdapter() {
@@ -69,5 +95,11 @@ public class Controller {
         raster.requestFocus();
     }
 
-
+    private void update() {
+        raster.clear();
+        renderer.drawPolygon(polygonPoints, 0x00FFFF);
+        for (int i = 0; i < linePoints.size(); i += 2) {
+            renderer.drawDDA(linePoints.get(i).x, linePoints.get(i).y, linePoints.get(i + 1).x, linePoints.get(i + 1).y, 0xFF11FF);
+        }
+    }
 }

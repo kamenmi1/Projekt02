@@ -1,5 +1,6 @@
 package Projekt02.renderer;
 
+import Projekt02.model.Point;
 import Projekt02.view.Raster;
 
 import java.util.List;
@@ -93,7 +94,7 @@ public class Renderer {
         }
     }
 
-    public void drawPolygon(List<Integer> points) {
+    public void drawPolygon01(List<Integer> points) {
         raster.clear();
         if (points.size() >= 6) {
             for (int i = 0; i < points.size() - 2; i += 2) {
@@ -114,5 +115,13 @@ public class Renderer {
             x0 = x;
             y0 = y;
         }
+    }
+
+    public void drawPolygon(List<Point> polygonPoints, int color) {
+        for(int i =0; i<polygonPoints.size()-1;i++ ){
+            drawDDA(polygonPoints.get(i).x,polygonPoints.get(i).y, polygonPoints.get(i+1).x,polygonPoints.get(i+1).y,color);
+        }
+        drawDDA(polygonPoints.get(0).x,
+                polygonPoints.get(0).y, polygonPoints.get(polygonPoints.size()-1).x, polygonPoints.get(polygonPoints.size()-1).y,color);
     }
 }
