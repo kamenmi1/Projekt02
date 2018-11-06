@@ -20,6 +20,7 @@ public class Controller {
     private Raster raster;
     private Renderer renderer;
     private final List<Point> polygonPoints = new ArrayList<>();
+    private final List<Point> clipPoints = new ArrayList<>(); //TODO
     private final List<Point> linePoints = new ArrayList<>();
 
     public Controller(PGRFWindow window) {
@@ -30,6 +31,8 @@ public class Controller {
     private void initObjects(PGRFWindow window) {
         raster = new Raster();
         window.add(raster); // vložit plátno do okna
+        raster.setFocusable(true);
+        raster.grabFocus();
 
         renderer = new Renderer(raster);
 
@@ -48,7 +51,7 @@ public class Controller {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     polygonPoints.add(new Point(e.getX(), e.getY()));
                     if (polygonPoints.size() == 1) {
-                        polygonPoints.add(new Point(e.getX(), e.getY()));
+                        polygonPoints.add(new Point(e.getX(), e.getY())); // naplnit clipPoints -- na prostredni tlacitko mysi
                     }
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     linePoints.add(new Point(e.getX(), e.getY()));
@@ -92,7 +95,7 @@ public class Controller {
             }
         });
         // chceme, aby canvas měl focus hned při spuštění
-        raster.requestFocus();
+     //  raster.requestFocus();
     }
 
     private void update() {
@@ -101,5 +104,8 @@ public class Controller {
         for (int i = 0; i < linePoints.size(); i += 2) {
             renderer.drawDDA(linePoints.get(i).x, linePoints.get(i).y, linePoints.get(i + 1).x, linePoints.get(i + 1).y, 0xFF11FF);
         }
+
+        //List<Point> out = renderer.clip(...);
+        //renderer.drawPolygon(out,0xff0000);
     }
 }

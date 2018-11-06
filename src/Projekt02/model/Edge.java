@@ -27,6 +27,7 @@ public class Edge {
 
     /**
      * tady nam to zjisti, zda existuje prusecik s hranou
+     *
      * @param y y-ova souradnice scanline
      * @return true, pokud prusecik existuje
      */
@@ -43,7 +44,29 @@ public class Edge {
 
     public int getIntersection(int y) {
         //vypocitat prusecik pomoci y, k, q; -- trivialni algoritmus (OSA Y)
-        return  0;
+        return 0;
+    }
+
+    public boolean isInside(Point p) {
+        Point t = new Point(x2 - x1, y2 - y1);
+        Point n = new Point(t.y, -t.x);
+//        Point n = new Point(-t.y, t.x);
+        Point v = new Point(p.x - x1, p.y - y1);
+        return (n.x * v.x + n.x * v.y < 0);
+    }
+
+    /**
+     * Vypocitani pruseciku dvou hran
+     *
+     * @param v1 prvni bod druhe hrany
+     * @param v2 druhy bod druhe hrany
+     * @return prusecik
+     */
+
+    public Point getIntersection(Point v1, Point v2) {
+        float x0 = ((v1.x * v2.y - v1.y * v2.x) * (x1 - x2) - (x1 * y2 - y1 * x2) * (v1.x - v2.x)) / (float) ((v1.x - v2.x) * (y1 - y2) - (x1 - x2) * (v1.y - v2.y));
+        float y0 = ((v1.x * v2.y - v1.y * v2.x) * (y1 - y2) - (x1 * y2 - y1 * x2) * (v1.y - v2.y)) / (float) ((v1.x - v2.x) * (y1 - y2) - (x1 - x2) * (v1.y - v2.y));
+        return new Point(Math.round(x0),Math.round(y0));
     }
 
 }

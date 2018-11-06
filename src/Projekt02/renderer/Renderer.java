@@ -3,6 +3,7 @@ package Projekt02.renderer;
 import Projekt02.model.Point;
 import Projekt02.view.Raster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Renderer {
@@ -123,5 +124,29 @@ public class Renderer {
         }
         drawDDA(polygonPoints.get(0).x,
                 polygonPoints.get(0).y, polygonPoints.get(polygonPoints.size()-1).x, polygonPoints.get(polygonPoints.size()-1).y,color);
+    }
+
+    public List<Point> clip(List<Point> polygonPoints, List<Point> clipPoints){
+        // in - seznam vrcholu orezavaneho polygonu (na tabuly ten cerny)
+        // clipPoints - seznam vrcholu orezevaneho polygonu (na tabuly ten zeleny)
+        // out - seznam vrcholu toho orezaneho
+
+        List<Point> in = polygonPoints;
+        Point p1 = null; //vlozit ten posledni clip point
+
+        for (Point p2: clipPoints){
+            List<Point> out = new ArrayList<>();
+            //vytvorit hranu z bodu p1 a p2
+
+            //Point v1 = in.last;
+            for (Point v2 : in) {
+
+            }
+            //TODO opsat kod z prednasky C
+            p1 = p2;
+            in = out;
+        }
+
+        return in;
     }
 }
