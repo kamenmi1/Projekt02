@@ -2,6 +2,7 @@ package Projekt02.fill;
 
 import Projekt02.model.Edge;
 import Projekt02.model.Point;
+import Projekt02.renderer.Renderer;
 import Projekt02.view.Raster;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class ScanLine implements Filler{
 
     }
 
-    public void init(List<Point> points, int fillColor, int edgeColor){
+    public void init(List<Point>  points, int fillColor, int edgeColor){
         this.points = points;
         this.fillColor = fillColor;
         this.edgeColor = edgeColor;
@@ -44,10 +45,31 @@ public class ScanLine implements Filler{
         int maxY = minY;
         //projet vsechny mody a najit minimalni a maximalni Y
 
-        // pro vsechna y od nalazeneho minima od nalezenho maxima
-        for (int y = minY; y <= maxY; y++){
+        for (int i = 0; i < points.size(); i++) {
+            if (minY > points.get(i).y)
+                minY = points.get(i).y;
+            if (maxY < points.get(i).y)
+                maxY = points.get(i).y;
 
-            List<Integer> intersections = new ArrayList<>();
+            Edge temp = new Edge(points.get(i), points.get((i + 1) % points.size()));
+
+            if (!temp.isHorizontal()) {
+                temp.orientate();
+                edges.add(temp);
+            }
+        }
+
+
+        // pro vsechna y od nalazeneho minima od nalezenho maxima
+        List<Integer> intersections = new ArrayList<>();
+
+        for (int y = minY; y <= maxY; y++){
+            for (Edge sl : edges) {
+                if (sl.intersectionExits(y)) {
+                    intersections.add(sl.getIntersection(y));
+                }
+            }
+
             //projit vsechny hrany
             // pokud ma usecka prusecik na tomot Y
             // tak vypocitat a ulozit hodnotu pruseciku do seznamu
@@ -56,6 +78,11 @@ public class ScanLine implements Filler{
             //nebo volitene implementovat vlastni algoritmus
             //provedeme vzbarveni mezi pruseciky
             //tzn. vykreslit caru mezi kazdym sudym a lichym prusecikem
+            Renderer draw = new Renderer(raster);
+            for (int i = 0; i < intersections.size(); i += 2) {
+                draw.drawDDA(intersections.get(i), y, intersections.get(i + 1), y,0xFF1493	);
+            }
+            intersections.clear();
         }
         // obtahnuti hranice
         //TODO:renderer.drawPolygon(points, edgeColor);

@@ -1,5 +1,6 @@
 package Projekt02.controller;
 
+import Projekt02.fill.ScanLine;
 import Projekt02.fill.SeedFill;
 import Projekt02.model.Point;
 import Projekt02.renderer.Renderer;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Controller {
 
     private SeedFill seedFill;
+    private ScanLine scanLine;
     private Raster raster;
     private Renderer renderer;
     private final List<Point> polygonPoints = new ArrayList<>();
@@ -38,6 +40,10 @@ public class Controller {
 
         seedFill = new SeedFill();
         seedFill.setRaster(raster);
+
+        scanLine = new ScanLine();
+        scanLine.setRaster(raster);
+
     }
 
     private void initListeners() {
@@ -63,7 +69,13 @@ public class Controller {
                 if (e.isControlDown()) {
                     seedFill.init(e.getX(), e.getY(), 0x00ffff);
                     seedFill.fill();
-                } else {
+                }
+                else if (e.isShiftDown()){
+                    scanLine.init(linePoints,0xff0000, 0xee82ee);
+                    scanLine.fill();
+                }
+
+                else {
                     raster.drawPixel(e.getX(), e.getY(), 0xffffff);
                 }
             }

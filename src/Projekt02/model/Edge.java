@@ -14,7 +14,6 @@ public class Edge {
     //zjitisti jestli je hrana vodorovna
     //true pokud je vodorovna a false pokud ne
     public boolean isHorizontal() {
-
         return y1 == y2;
     }
 
@@ -37,7 +36,7 @@ public class Edge {
      * @return true, pokud prusecik existuje
      */
     public boolean intersectionExits(int y) {
-        return false;
+        return (y >= y1 && y < y2);
     }
 
     /**
@@ -49,7 +48,13 @@ public class Edge {
 
     public int getIntersection(int y) {
         //vypocitat prusecik pomoci y, k, q; -- trivialni algoritmus (OSA Y)
-        return 0;
+        float dx = (float) (x2 - x1);
+        float dy = (float) (y2 - y1);
+        float k = dx / dy;
+        float q = (x1 - (k * y1));
+
+        float x = (k * y) + q;
+        return (int) x;
     }
 
     public boolean isInside(Point p) {
