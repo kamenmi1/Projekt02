@@ -14,8 +14,8 @@ public class Edge {
     //zjitisti jestli je hrana vodorovna
     //true pokud je vodorovna a false pokud ne
     public boolean isHorizontal() {
-        // TODO y1 = y2
-        return false;
+
+        return y1 == y2;
     }
 
     /**
@@ -23,6 +23,11 @@ public class Edge {
      */
     public void orientate() {
         // prohozeni, když y1 je vesti nez y2
+        if (y1 > y2) {
+            int a = y1;
+            y1 = y2;
+            y2 = a;
+        }
     }
 
     /**
