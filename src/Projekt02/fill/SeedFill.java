@@ -41,6 +41,5 @@ public class SeedFill implements Filler {
                 seed(ax, ay - 1);
             }
         }
-
     }
 }

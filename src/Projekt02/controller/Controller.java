@@ -71,7 +71,7 @@ public class Controller {
                     seedFill.fill();
                 }
                 else if (e.isShiftDown()){
-                    scanLine.init(linePoints,0xff0000, 0xee82ee);
+                    scanLine.init(polygonPoints,0xff0000, 0xee82ee);
                     scanLine.fill();
                 }
 
@@ -91,7 +91,7 @@ public class Controller {
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     linePoints.get(linePoints.size() - 1).x = e.getX();
                     linePoints.get(linePoints.size() - 1).y = e.getY();
-//renderer.drawDDA(400, 300, e.getX(), e.getY(), 0xffff00);
+                    //renderer.drawDDA(400, 300, e.getX(), e.getY(), 0xffff00);
                 }
                 update();
             }

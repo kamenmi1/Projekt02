@@ -3,7 +3,6 @@ package Projekt02.renderer;
 import Projekt02.model.Point;
 import Projekt02.view.Raster;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Renderer {
@@ -126,21 +125,33 @@ public class Renderer {
                 polygonPoints.get(0).y, polygonPoints.get(polygonPoints.size()-1).x, polygonPoints.get(polygonPoints.size()-1).y,color);
     }
 
-    public List<Point> clip(List<Point> polygonPoints, List<Point> clipPoints){
+    /*public List<Point> clip(List<Point> polygonPoints, List<Point> clipPoints){
         // in - seznam vrcholu orezavaneho polygonu (na tabuly ten cerny)
         // clipPoints - seznam vrcholu orezevaneho polygonu (na tabuly ten zeleny)
         // out - seznam vrcholu toho orezaneho
 
         List<Point> in = polygonPoints;
-        Point p1 = null; //vlozit ten posledni clip point
+        Point p1 = clipPoints.get(clipPoints.size() - 1);//vlozit ten posledni clip point
 
         for (Point p2: clipPoints){
             List<Point> out = new ArrayList<>();
             //vytvorit hranu z bodu p1 a p2
-
+            out.clear();
+            Point v1 = in.last;
             //Point v1 = in.last;
             for (Point v2 : in) {
-
+                if(v2 inside edge){
+                    if (v1 not inside edge){
+                        out.add(intersection((v1,v2,edge));
+                    }
+                    out.add(v2);
+                    else{
+                        if (v1 inside edge){
+                            out.add(intersection(v1,v2,edge));
+                        }
+                    }
+                }
+                v1 = v2;
             }
             //TODO opsat kod z prednasky C
             p1 = p2;
@@ -148,5 +159,5 @@ public class Renderer {
         }
 
         return in;
-    }
+    }*/
 }

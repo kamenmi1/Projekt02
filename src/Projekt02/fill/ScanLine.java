@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ScanLine implements Filler{
+public class ScanLine implements Filler {
     private List<Point> points;
     private int fillColor, edgeColor;
     private Raster raster;
@@ -26,14 +26,13 @@ public class ScanLine implements Filler{
 
     }
 
-    public void init(List<Point>  points, int fillColor, int edgeColor){
+    public void init(List<Point> points, int fillColor, int edgeColor) {
         this.points = points;
         this.fillColor = fillColor;
         this.edgeColor = edgeColor;
     }
 
     private void scanLine() {
-        List<Edge> edges = new ArrayList<>();
         // projet vsechny vrcholy a vytvorit z nich hrany
         // 0 a 1 bod budou
         // posleni a 0 budou hrana
@@ -44,6 +43,7 @@ public class ScanLine implements Filler{
         int minY = points.get(0).y;
         int maxY = minY;
         //projet vsechny mody a najit minimalni a maximalni Y
+        List<Edge> edges = new ArrayList<>();
 
         for (int i = 0; i < points.size(); i++) {
             if (minY > points.get(i).y)
@@ -62,8 +62,9 @@ public class ScanLine implements Filler{
 
         // pro vsechna y od nalazeneho minima od nalezenho maxima
         List<Integer> intersections = new ArrayList<>();
+        Renderer draw = new Renderer(raster);
 
-        for (int y = minY; y <= maxY; y++){
+        for (int y = minY; y <= maxY; y++) {
             for (Edge sl : edges) {
                 if (sl.intersectionExits(y)) {
                     intersections.add(sl.getIntersection(y));
@@ -78,13 +79,16 @@ public class ScanLine implements Filler{
             //nebo volitene implementovat vlastni algoritmus
             //provedeme vzbarveni mezi pruseciky
             //tzn. vykreslit caru mezi kazdym sudym a lichym prusecikem
-            Renderer draw = new Renderer(raster);
             for (int i = 0; i < intersections.size(); i += 2) {
-                draw.drawDDA(intersections.get(i), y, intersections.get(i + 1), y,0xFF1493	);
+                draw.drawDDA(intersections.get(i), y, intersections.get(i + 1), y, 0xFF1493);
             }
             intersections.clear();
         }
         // obtahnuti hranice
         //TODO:renderer.drawPolygon(points, edgeColor);
+        /*for (int i = 0; i < points.size()-1; i = i + 2) {
+            draw.drawDDA((int) points.get(i).x, (int) points.get(i).y, (int) points.get(i + 1).y,
+                    (int) points.get(i + 1).y, 0x00FF00);
+        }*/
     }
 }
