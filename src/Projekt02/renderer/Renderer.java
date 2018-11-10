@@ -1,16 +1,41 @@
 package Projekt02.renderer;
 
+import Projekt02.model.Edge;
 import Projekt02.model.Point;
 import Projekt02.view.Raster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Renderer {
 
     private Raster raster;
+    private Edge edge;
+    ArrayList<Point> ctverecPoint = new ArrayList<>();
+
 
     public Renderer(Raster raster) {
         this.raster = raster;
+    }
+
+    public ArrayList vykresliCtverec() {
+        Point p1 = new Point(50, 50);
+        Point p2 = new Point(300, 50);
+        Point p3 = new Point(300, 300);
+        Point p4 = new Point(50, 300);
+        ctverecPoint.add(p1);
+        ctverecPoint.add(p2);
+        ctverecPoint.add(p3);
+        ctverecPoint.add(p4);
+
+        if (ctverecPoint.size() >= 8) {
+            for (int i = 0; i < ctverecPoint.size() - 1; i++) {
+                drawDDA(ctverecPoint.get(i).x, ctverecPoint.get(i).y, ctverecPoint.get(i + 1).x, ctverecPoint.get(i + 1).y, 0xFF4488);
+            }
+            drawDDA(ctverecPoint.get(0).x,
+                    ctverecPoint.get(0).y, ctverecPoint.get(ctverecPoint.size() - 1).x, ctverecPoint.get(ctverecPoint.size() - 1).y, 0xFF4488);
+        }
+        return ctverecPoint;
     }
 
     public void drawLine(int x1, int y1, int x2, int y2, int color) {
@@ -103,6 +128,7 @@ public class Renderer {
             drawLine(points.get(0), points.get(1), points.get(points.size() - 2), points.get(points.size() - 1), 0xFF4488);
         }
     }
+
     public void polygon(int x1, int y1, int x2, int y2, int vrcholy) {
         double x0 = x2 - x1;
         double y0 = y2 - y1;
@@ -118,36 +144,37 @@ public class Renderer {
     }
 
     public void drawPolygon(List<Point> polygonPoints, int color) {
-        for(int i =0; i<polygonPoints.size()-1;i++ ){
-            drawDDA(polygonPoints.get(i).x,polygonPoints.get(i).y, polygonPoints.get(i+1).x,polygonPoints.get(i+1).y,color);
+        for (int i = 0; i < polygonPoints.size() - 1; i++) {
+            drawDDA(polygonPoints.get(i).x, polygonPoints.get(i).y, polygonPoints.get(i + 1).x, polygonPoints.get(i + 1).y, color);
         }
         drawDDA(polygonPoints.get(0).x,
-                polygonPoints.get(0).y, polygonPoints.get(polygonPoints.size()-1).x, polygonPoints.get(polygonPoints.size()-1).y,color);
+                polygonPoints.get(0).y, polygonPoints.get(polygonPoints.size() - 1).x, polygonPoints.get(polygonPoints.size() - 1).y, color);
     }
 
-    /*public List<Point> clip(List<Point> polygonPoints, List<Point> clipPoints){
+    public List<Point> clip(List<Point> polygonPoints, List<Point> clipPoints) {
         // in - seznam vrcholu orezavaneho polygonu (na tabuly ten cerny)
         // clipPoints - seznam vrcholu orezevaneho polygonu (na tabuly ten zeleny)
         // out - seznam vrcholu toho orezaneho
 
         List<Point> in = polygonPoints;
-        Point p1 = clipPoints.get(clipPoints.size() - 1);//vlozit ten posledni clip point
+        clipPoints.addAll(ctverecPoint);
+        Point p1 = clipPoints.get(clipPoints.size()-1);//vlozit ten posledni clip point
 
         for (Point p2: clipPoints){
             List<Point> out = new ArrayList<>();
             //vytvorit hranu z bodu p1 a p2
             out.clear();
-            Point v1 = in.last;
+            Point v1 = in.get(in.size()-1);
             //Point v1 = in.last;
             for (Point v2 : in) {
-                if(v2 inside edge){
-                    if (v1 not inside edge){
-                        out.add(intersection((v1,v2,edge));
+                if( edge.isInside(v2)){
+                    if (/*v1 not inside edge*/ !edge.isInside(v1)){
+                        out.add(edge.getIntersection(v1,v2));
+                        out.add(v2);
                     }
-                    out.add(v2);
                     else{
-                        if (v1 inside edge){
-                            out.add(intersection(v1,v2,edge));
+                        if (/*v1 inside edge*/ edge.isInside(v1)){
+                            out.add(edge.getIntersection(v1,v2));
                         }
                     }
                 }
@@ -159,5 +186,6 @@ public class Renderer {
         }
 
         return in;
-    }*/
+    }
+
 }

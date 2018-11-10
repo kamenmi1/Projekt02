@@ -85,10 +85,8 @@ public class ScanLine implements Filler {
             intersections.clear();
         }
         // obtahnuti hranice
-        //TODO:renderer.drawPolygon(points, edgeColor);
-        /*for (int i = 0; i < points.size()-1; i = i + 2) {
-            draw.drawDDA((int) points.get(i).x, (int) points.get(i).y, (int) points.get(i + 1).y,
-                    (int) points.get(i + 1).y, 0x00FF00);
-        }*/
+        //renderer.drawPolygon(points, edgeColor); DONE
+
+        draw.drawPolygon(points,0x00FF00);
     }
 }

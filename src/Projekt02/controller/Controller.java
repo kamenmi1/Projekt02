@@ -25,6 +25,8 @@ public class Controller {
     private final List<Point> clipPoints = new ArrayList<>(); //TODO
     private final List<Point> linePoints = new ArrayList<>();
 
+    public int fillColor = 0x00ffff;
+
     public Controller(PGRFWindow window) {
         initObjects(window);
         initListeners();
@@ -44,6 +46,7 @@ public class Controller {
         scanLine = new ScanLine();
         scanLine.setRaster(raster);
 
+        renderer.vykresliCtverec();
     }
 
     private void initListeners() {
@@ -67,7 +70,7 @@ public class Controller {
 
             public void mouseClicked(MouseEvent e) {
                 if (e.isControlDown()) {
-                    seedFill.init(e.getX(), e.getY(), 0x00ffff);
+                    seedFill.init(e.getX(), e.getY(), fillColor);
                     seedFill.fill();
                 }
                 else if (e.isShiftDown()){
@@ -116,8 +119,9 @@ public class Controller {
         for (int i = 0; i < linePoints.size(); i += 2) {
             renderer.drawDDA(linePoints.get(i).x, linePoints.get(i).y, linePoints.get(i + 1).x, linePoints.get(i + 1).y, 0xFF11FF);
         }
+        renderer.vykresliCtverec();
 
-        //List<Point> out = renderer.clip(...);
-        //renderer.drawPolygon(out,0xff0000);
+        List<Point> out = renderer.clip(polygonPoints,clipPoints);
+        renderer.drawPolygon(out,0xff0000);
     }
 }
