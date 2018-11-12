@@ -23,7 +23,7 @@ public class Controller {
     private Raster raster;
     private Renderer renderer;
     private final List<Point> polygonPoints = new ArrayList<>();
-    private List<Point> clipPoints = new ArrayList<>(); //TODO
+    private List<Point> clipPoints = new ArrayList<>();
     private final List<Point> linePoints = new ArrayList<>();
 
     public int fillColorBorder = Color.green.getRGB();
@@ -77,8 +77,7 @@ public class Controller {
                 } else if (e.isShiftDown()) {
                     scanLine.init(polygonPoints, 0xff0000, 0xee82ee);
                     scanLine.fill();
-                }
-                else if (e.isAltDown()){
+                } else if (e.isAltDown()) {
                     seedFill.init(e.getX(), e.getY(), fillColorBorder);
                     seedFill.fillDruhaPodminka(); //Druha podminka SEEDfill
                 } else {
@@ -97,7 +96,6 @@ public class Controller {
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     linePoints.get(linePoints.size() - 1).x = e.getX();
                     linePoints.get(linePoints.size() - 1).y = e.getY();
-                    //renderer.drawDDA(400, 300, e.getX(), e.getY(), 0xffff00);
                 }
                 update();
             }
@@ -125,8 +123,11 @@ public class Controller {
         renderer.drawPolygon(clipPoints, Color.green.getRGB());
 
         List<Point> out = renderer.clip(polygonPoints, clipPoints);
-        scanLine.init(out, Color.red.getRGB(), Color.BLUE.getRGB());
-        scanLine.fill();
-        //renderer.drawPolygon(out,0xff0000);
+        if (out.size() > 2) {
+
+            scanLine.init(out, Color.red.getRGB(), Color.BLUE.getRGB());
+            scanLine.fill();
+
+        }
     }
 }

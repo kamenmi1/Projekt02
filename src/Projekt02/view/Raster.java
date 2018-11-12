@@ -22,7 +22,7 @@ public class Raster extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(img,0,0,null);
+        g.drawImage(img, 0, 0, null);
     }
 
     private void setTimer() {

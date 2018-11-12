@@ -1,6 +1,5 @@
 package Projekt02.fill;
 
-import Projekt02.controller.Controller;
 import Projekt02.view.Raster;
 
 import java.awt.*;
@@ -16,7 +15,6 @@ public class SeedFill implements Filler {
     public int fillColor = Color.green.getRGB();
 
     private Raster raster;
-    private Controller controller;
 
     @Override
     public void setRaster(Raster raster) {
@@ -27,6 +25,7 @@ public class SeedFill implements Filler {
     public void fill() {
         seed(x, y);
     }
+
     public void fillDruhaPodminka() {
         seedJinaPOdminka(x, y);
     }
@@ -52,9 +51,10 @@ public class SeedFill implements Filler {
             }
         }
     }
+
     private void seedJinaPOdminka(int ax, int ay) {
         if ((ax >= 0) && (ay >= 0) && (ax < Raster.WIDTH) && (ay < Raster.HEIGHT)) {
-            if (raster.getPixel(ax, ay)!= boundaryColor && raster.getPixel(ax, ay) != fillColor) {
+            if (raster.getPixel(ax, ay) != boundaryColor && raster.getPixel(ax, ay) != fillColor) {
                 raster.drawPixel(ax, ay, color);
                 seedJinaPOdminka(ax + 1, ay);
                 seedJinaPOdminka(ax - 1, ay);

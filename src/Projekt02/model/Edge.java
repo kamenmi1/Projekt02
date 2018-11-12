@@ -63,7 +63,7 @@ public class Edge {
     public boolean isInside(Point p) {
         Point t = new Point(x2 - x1, y2 - y1);
         Point n = new Point(t.y, -t.x);
-       // Point n = new Point(-t.y, t.x);
+        // Point n = new Point(-t.y, t.x);
         Point v = new Point(p.x - x1, p.y - y1);
         return (n.x * v.x + n.y * v.y < 0);
     }

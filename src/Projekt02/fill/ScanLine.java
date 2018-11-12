@@ -85,8 +85,6 @@ public class ScanLine implements Filler {
             intersections.clear();
         }
         // obtahnuti hranice
-        //renderer.drawPolygon(points, edgeColor); DONE
-
-        draw.drawPolygon(points,0x00FF00);
+        draw.drawPolygon(points, 0x00FF00);
     }
 }
