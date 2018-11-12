@@ -18,7 +18,8 @@ public class Renderer {
         this.raster = raster;
     }
 
-    public ArrayList vykresliCtverec() {
+    public List<Point> vykresliCtverec() {
+        ctverecPoint.clear();
         Point p1 = new Point(50, 50);
         Point p2 = new Point(300, 50);
         Point p3 = new Point(300, 300);
@@ -28,13 +29,13 @@ public class Renderer {
         ctverecPoint.add(p3);
         ctverecPoint.add(p4);
 
-        if (ctverecPoint.size() >= 8) {
+        /*if (ctverecPoint.size() >= 8) {
             for (int i = 0; i < ctverecPoint.size() - 1; i++) {
                 drawDDA(ctverecPoint.get(i).x, ctverecPoint.get(i).y, ctverecPoint.get(i + 1).x, ctverecPoint.get(i + 1).y, 0xFF4488);
             }
             drawDDA(ctverecPoint.get(0).x,
                     ctverecPoint.get(0).y, ctverecPoint.get(ctverecPoint.size() - 1).x, ctverecPoint.get(ctverecPoint.size() - 1).y, 0xFF4488);
-        }
+        }*/
         return ctverecPoint;
     }
 
@@ -151,32 +152,29 @@ public class Renderer {
                 polygonPoints.get(0).y, polygonPoints.get(polygonPoints.size() - 1).x, polygonPoints.get(polygonPoints.size() - 1).y, color);
     }
 
-    public List<Point> clip(List<Point> polygonPoints, List<Point> clipPoints) {
+    /*public List<Point> clip(List<Point> polygonPoints, List<Point> clipPoints) {
         // in - seznam vrcholu orezavaneho polygonu (na tabuly ten cerny)
         // clipPoints - seznam vrcholu orezevaneho polygonu (na tabuly ten zeleny)
         // out - seznam vrcholu toho orezaneho
 
         List<Point> in = polygonPoints;
         clipPoints.addAll(ctverecPoint);
-        Point p1 = clipPoints.get(clipPoints.size()-1);//vlozit ten posledni clip point
+        Point p1 = clipPoints.get(clipPoints.size() - 1);//vlozit ten posledni clip point
+        List<Point> out = new ArrayList<>();
 
-        for (Point p2: clipPoints){
-            List<Point> out = new ArrayList<>();
+        for (Point p2 : clipPoints) {
             //vytvorit hranu z bodu p1 a p2
             out.clear();
-            Point v1 = in.get(in.size()-1);
+            Point v1 = in.get(in.size() - 1);
             //Point v1 = in.last;
             for (Point v2 : in) {
-                if( edge.isInside(v2)){
-                    if (/*v1 not inside edge*/ !edge.isInside(v1)){
-                        out.add(edge.getIntersection(v1,v2));
-                        out.add(v2);
+                if (edge.isInside(v2)) {
+                    if (*//*v1 not inside edge*//* !edge.isInside(v1)) {
+                        out.add(edge.getIntersection(v1, v2));
                     }
-                    else{
-                        if (/*v1 inside edge*/ edge.isInside(v1)){
-                            out.add(edge.getIntersection(v1,v2));
-                        }
-                    }
+                    out.add(v2);
+                } else if (*//*v1 inside edge*//* edge.isInside(v1)) {
+                    out.add(edge.getIntersection(v1, v2));
                 }
                 v1 = v2;
             }
@@ -184,8 +182,50 @@ public class Renderer {
             p1 = p2;
             in = out;
         }
-
         return in;
+    }*/
+    public List<Point> clip(List<Point> points, List<Point> clipPoints)
+    {
+        if (clipPoints.size() < 2) {
+            return points;
+        }
+        List<Point> newPoints = points;
+        Point p1 = clipPoints.get(clipPoints.size() - 1);
+        for (Point p2 : clipPoints)
+        {
+            newPoints = clipEdge(points, new Edge(p1, p2));
+            points = newPoints;
+            p1 = p2;
+        }
+        return newPoints;
     }
 
+    private List<Point> clipEdge(List<Point> points, Edge e)
+    {
+        if (points.size() < 2) {
+            return points;
+        }
+        List<Point> out = new ArrayList<>();
+        out.clear();
+        Point v1 = points.get(points.size() - 1);
+        for (Point v2 : points)
+        {
+            if (e.isInside(v2))
+            {
+                if (!e.isInside(v1)) {
+                    out.add(e.getIntersection(v1, v2));
+                }
+                out.add(v2);
+            }
+            else if (e.isInside(v1))
+            {
+                out.add(e.getIntersection(v1, v2));
+            }
+            v1 = v2;
+        }
+        return out;
+    }
+
+    //Zeptat se na fungování clipPoint
+    // Nefukčnost -- druhá část -- ta první zakomentovaná je s čtvercem
 }

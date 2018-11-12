@@ -8,6 +8,7 @@ import Projekt02.view.PGRFWindow;
 import Projekt02.view.Raster;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -22,7 +23,7 @@ public class Controller {
     private Raster raster;
     private Renderer renderer;
     private final List<Point> polygonPoints = new ArrayList<>();
-    private final List<Point> clipPoints = new ArrayList<>(); //TODO
+    private List<Point> clipPoints = new ArrayList<>(); //TODO
     private final List<Point> linePoints = new ArrayList<>();
 
     public int fillColor = 0x00ffff;
@@ -46,7 +47,7 @@ public class Controller {
         scanLine = new ScanLine();
         scanLine.setRaster(raster);
 
-        renderer.vykresliCtverec();
+        clipPoints = renderer.vykresliCtverec();
     }
 
     private void initListeners() {
@@ -72,13 +73,10 @@ public class Controller {
                 if (e.isControlDown()) {
                     seedFill.init(e.getX(), e.getY(), fillColor);
                     seedFill.fill();
-                }
-                else if (e.isShiftDown()){
-                    scanLine.init(polygonPoints,0xff0000, 0xee82ee);
+                } else if (e.isShiftDown()) {
+                    scanLine.init(polygonPoints, 0xff0000, 0xee82ee);
                     scanLine.fill();
-                }
-
-                else {
+                } else {
                     raster.drawPixel(e.getX(), e.getY(), 0xffffff);
                 }
             }
@@ -110,18 +108,20 @@ public class Controller {
             }
         });
         // chceme, aby canvas měl focus hned při spuštění
-     //  raster.requestFocus();
+        //  raster.requestFocus();
     }
 
     private void update() {
         raster.clear();
-        renderer.drawPolygon(polygonPoints, 0x00FFFF);
+        renderer.drawPolygon(polygonPoints, Color.yellow.getRGB());
         for (int i = 0; i < linePoints.size(); i += 2) {
             renderer.drawDDA(linePoints.get(i).x, linePoints.get(i).y, linePoints.get(i + 1).x, linePoints.get(i + 1).y, 0xFF11FF);
         }
-        renderer.vykresliCtverec();
+        renderer.drawPolygon(clipPoints, Color.green.getRGB());
 
-        List<Point> out = renderer.clip(polygonPoints,clipPoints);
-        renderer.drawPolygon(out,0xff0000);
+        List<Point> out = renderer.clip(polygonPoints, clipPoints);
+        scanLine.init(out, Color.red.getRGB(), Color.BLUE.getRGB());
+        scanLine.fill();
+        //renderer.drawPolygon(out,0xff0000);
     }
 }

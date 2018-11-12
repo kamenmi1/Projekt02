@@ -3,6 +3,8 @@ package Projekt02.fill;
 import Projekt02.controller.Controller;
 import Projekt02.view.Raster;
 
+import java.awt.*;
+
 public class SeedFill implements Filler {
 
     private int x;
@@ -10,7 +12,7 @@ public class SeedFill implements Filler {
     private int color;
     private int currentRGB;
 
-    private int boundaryColor = 0xFFF00;
+    private int boundaryColor = Color.yellow.getRGB();
     public int fillColor = 0x00ffff;
 
     private Raster raster;
@@ -23,7 +25,7 @@ public class SeedFill implements Filler {
 
     @Override
     public void fill() {
-        seed(x, y);
+        seedJinaPOdminka(x, y);
     }
 
     public void init(int x, int y, int color) {
@@ -58,4 +60,7 @@ public class SeedFill implements Filler {
             }
         }
     }
+    // SeedFill druhá podmínka -- s vyplnovani podle barevne hranice
+    //Uvažujte dvě možnosti hraniční podmínky vyplňování. Jednak omezení barvou pozadí a jednak barvou hranice.
+    // Co bude v zapoctu -- prednasky -- B,C,D?
 }
