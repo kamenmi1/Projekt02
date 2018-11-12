@@ -13,7 +13,7 @@ public class SeedFill implements Filler {
     private int currentRGB;
 
     private int boundaryColor = Color.yellow.getRGB();
-    public int fillColor = 0x00ffff;
+    public int fillColor = Color.green.getRGB();
 
     private Raster raster;
     private Controller controller;
@@ -25,6 +25,9 @@ public class SeedFill implements Filler {
 
     @Override
     public void fill() {
+        seed(x, y);
+    }
+    public void fillDruhaPodminka() {
         seedJinaPOdminka(x, y);
     }
 
@@ -53,10 +56,10 @@ public class SeedFill implements Filler {
         if ((ax >= 0) && (ay >= 0) && (ax < Raster.WIDTH) && (ay < Raster.HEIGHT)) {
             if (raster.getPixel(ax, ay)!= boundaryColor && raster.getPixel(ax, ay) != fillColor) {
                 raster.drawPixel(ax, ay, color);
-                seed(ax + 1, ay);
-                seed(ax - 1, ay);
-                seed(ax, ay + 1);
-                seed(ax, ay - 1);
+                seedJinaPOdminka(ax + 1, ay);
+                seedJinaPOdminka(ax - 1, ay);
+                seedJinaPOdminka(ax, ay + 1);
+                seedJinaPOdminka(ax, ay - 1);
             }
         }
     }

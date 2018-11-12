@@ -26,7 +26,8 @@ public class Controller {
     private List<Point> clipPoints = new ArrayList<>(); //TODO
     private final List<Point> linePoints = new ArrayList<>();
 
-    public int fillColor = 0x00ffff;
+    public int fillColorBorder = Color.green.getRGB();
+    public int fillColorBackground = Color.RED.getRGB();
 
     public Controller(PGRFWindow window) {
         initObjects(window);
@@ -71,11 +72,15 @@ public class Controller {
 
             public void mouseClicked(MouseEvent e) {
                 if (e.isControlDown()) {
-                    seedFill.init(e.getX(), e.getY(), fillColor);
+                    seedFill.init(e.getX(), e.getY(), fillColorBackground);
                     seedFill.fill();
                 } else if (e.isShiftDown()) {
                     scanLine.init(polygonPoints, 0xff0000, 0xee82ee);
                     scanLine.fill();
+                }
+                else if (e.isAltDown()){
+                    seedFill.init(e.getX(), e.getY(), fillColorBorder);
+                    seedFill.fillDruhaPodminka(); //Druha podminka SEEDfill
                 } else {
                     raster.drawPixel(e.getX(), e.getY(), 0xffffff);
                 }
