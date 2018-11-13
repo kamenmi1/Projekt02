@@ -107,6 +107,8 @@ public class Controller {
                 // na klávesu C vymazat plátno
                 if (e.getKeyCode() == KeyEvent.VK_C) {
                     raster.clear();
+                    polygonPoints.clear();
+                    linePoints.clear();
                 }
             }
         });

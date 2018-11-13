@@ -17,6 +17,8 @@ public class Raster extends JPanel {
         // inicializace image, nastavení rozměrů (nastavení typu - pro nás nedůležité)
         img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         setTimer();
+        setLayout(new BorderLayout());
+        setInfo();
     }
 
     @Override
@@ -45,11 +47,20 @@ public class Raster extends JPanel {
     }
 
     public void drawPixel(int x, int y, int color) {
+        if(x >=0 && x < WIDTH && y >=0 && y < HEIGHT)
         img.setRGB(x, y, color);
     }
 
     public int getPixel(int x, int y) {
         return img.getRGB(x, y);
+    }
+
+    public void setInfo(){
+        JLabel lblInfo = new JLabel();
+        lblInfo.setText("sdfsdfsfsfsfds"); //Dopsat klavesy pro kontrolovani vykreslovani
+        lblInfo.setFont(new Font("courier", Font.PLAIN,12));
+        lblInfo.setForeground(new Color(0xffffff));
+        add(lblInfo, BorderLayout.SOUTH);
     }
 
 }
