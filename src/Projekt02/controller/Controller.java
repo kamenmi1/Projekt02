@@ -35,10 +35,6 @@ public class Controller {
     }
 
     private void initObjects(PGRFWindow window) {
-        raster = new Raster();
-        window.add(raster); // vložit plátno do okna
-        raster.setFocusable(true);
-        raster.grabFocus();
 
         renderer = new Renderer(raster);
 

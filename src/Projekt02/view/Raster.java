@@ -57,7 +57,7 @@ public class Raster extends JPanel {
 
     public void setInfo(){
         JLabel lblInfo = new JLabel();
-        lblInfo.setText("sdfsdfsfsfsfds"); //Dopsat klavesy pro kontrolovani vykreslovani
+        lblInfo.setText("Mazání plátna (C) | SeedFill - prvni podminka (Ctrl+click) | SeedFill - druha podminka (Alt + click) | ScanLine - shift + click"); //Dopsat klavesy pro kontrolovani vykreslovani
         lblInfo.setFont(new Font("courier", Font.PLAIN,12));
         lblInfo.setForeground(new Color(0xffffff));
         add(lblInfo, BorderLayout.SOUTH);
