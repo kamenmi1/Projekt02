@@ -145,7 +145,7 @@ public class Renderer {
     }
 
     public List<Point> clip(List<Point> points, List<Point> clipPoints) {
-        if (clipPoints.size() < 2) {
+        if (clipPoints.size() < 2 || points.size() < 2) {
             return points;
         }
         List<Point> newPoints = points;
