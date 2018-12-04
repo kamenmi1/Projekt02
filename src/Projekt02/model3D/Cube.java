@@ -6,6 +6,10 @@ import java.awt.*;
 
 public class Cube extends Solid {
 
+    public Cube(){
+        this(Color.GREEN);
+    }
+
     public Cube( Color color) {
         this.color = color;
         vertices.add(new Point3D (-1,-1,1));
