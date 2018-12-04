@@ -30,12 +30,12 @@ public class Renderer3D {
         projection = new Mat4PerspRH(Math.PI / 4, Raster.HEIGHT / (float) Raster.WIDTH, 1, 200);
     }
 
-    public void add (Solid ... solids){
+    public void add(Solid... solids) {
         this.solids.addAll(Arrays.asList(solids));
         repaint();
     }
 
-    public void repaint(){ //chova se jako pole
+    public void repaint() { //chova se jako pole
         raster.clear();
         for (Solid solid : solids) {
             List<Point3D> vertices = solid.getVertices();
@@ -44,15 +44,23 @@ public class Renderer3D {
             for (int j = 0; j < indices.size(); j = j + 2) {
                 Point3D a = vertices.get(indices.get(j));
                 Point3D b = vertices.get(indices.get(j + 1));
-                drawLine(a, b, solid.getColor());
+                drawLine(a, b, solid.getColor(), false); //instanceOFF
             }
         }
     }
 
-    public void drawLine(Point3D a, Point3D b, Color color) {
-        a = a.mul(model).mul(view).mul(projection);
-        b = b.mul(model).mul(view).mul(projection);
+    public void drawLine(Point3D a, Point3D b, Color color, boolean isAxis) {
+        if (isAxis) {
 
+            a = a.mul(model).mul(projection);
+            b = b.mul(model).mul(projection);
+
+        } else {
+
+            a = a.mul(model).mul(view).mul(projection);
+            b = b.mul(model).mul(view).mul(projection);
+
+        }
 
         if (!a.dehomog().isPresent() || !b.dehomog().isPresent()) {
             return;
