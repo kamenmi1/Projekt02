@@ -66,6 +66,9 @@ public class Controller3D {
                     Mat4 rot = renderer3D.getModel().mul(new Mat4RotXYZ(rotY, 0, rotX));
                     renderer3D.setModel(rot);
                 }
+                else if (SwingUtilities.isMiddleMouseButton(e)){ //posunuti Mat4Transl
+
+                }
                 mx = e.getX();
                 my = e.getY();
 
