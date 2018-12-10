@@ -5,10 +5,6 @@ import transforms.Point3D;
 import java.awt.*;
 
 public class Pyramid extends Solid {
-    public Pyramid(){
-        this(Color.RED);
-    }
-
     public Pyramid( Color color) {
         this.color = color;
         vertices.add(new Point3D(0,0,1));

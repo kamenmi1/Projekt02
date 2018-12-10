@@ -2,10 +2,7 @@ package Projekt02.controller;
 
 import Projekt02.model3D.*;
 import Projekt02.view.Raster;
-import transforms.Camera;
-import transforms.Mat4;
-import transforms.Mat4RotXYZ;
-import transforms.Vec3D;
+import transforms.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,9 +63,14 @@ public class Controller3D {
                     Mat4 rot = renderer3D.getModel().mul(new Mat4RotXYZ(rotY, 0, rotX));
                     renderer3D.setModel(rot);
                 }
-                else if (SwingUtilities.isMiddleMouseButton(e)){ //posunuti Mat4Transl
+                else if (SwingUtilities.isMiddleMouseButton(e)){ //posunuti Mat4Transl -- X a Y
+                    double rotX = ((mx - e.getX()) / 555.5);
+                    double rotY = ((my - e.getY()) / -555.5);
 
+                    Mat4 tra = renderer3D.getModel().mul(new Mat4Transl(rotX,rotY,0.001));
+                    renderer3D.setModel(tra);
                 }
+        // TODO: MAT4Scale - změna měřítka
                 mx = e.getX();
                 my = e.getY();
 
@@ -90,13 +92,24 @@ public class Controller3D {
                         break;
                     case KeyEvent.VK_D:
                     case KeyEvent.VK_RIGHT:
-                        camera = camera.left(1);
+                        camera = camera.right(1);
                         renderer3D.setView(camera.getViewMatrix());
                         break;
                     case KeyEvent.VK_A:
                     case KeyEvent.VK_LEFT:
-                        camera = camera.right(1);
+                        camera = camera.left(1);
                         renderer3D.setView(camera.getViewMatrix());
+                        break;
+                    case KeyEvent.VK_E:
+                        camera = camera.up(1);
+                        renderer3D.setView(camera.getViewMatrix());
+                        break;
+                    case KeyEvent.VK_Q:
+                        camera = camera.down(1);
+                        renderer3D.setView(camera.getViewMatrix());
+                        break;
+                    case KeyEvent.VK_R:
+                        resetCamera();
                         break;
                 }
             }
@@ -111,7 +124,7 @@ public class Controller3D {
 
     private void initObjects() {
         cube = new Cube(Color.CYAN);
-        pyramid = new Pyramid(Color.RED);
+        pyramid = new Pyramid(Color.PINK);
         axisX = new AxisX(Color.RED);
         axisY = new AxisY(Color.GREEN);
         axisZ = new AxisZ(Color.BLUE);

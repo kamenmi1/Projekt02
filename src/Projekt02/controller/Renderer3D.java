@@ -14,7 +14,7 @@ import java.util.List;
 public class Renderer3D {
 
     private Raster raster;
-    private Mat4 model, view, projection;
+    private Mat4 model, view, projection, projectionOR;
     private List<Solid> solids = new ArrayList<>();
 
     public Renderer3D(Raster raster) {
@@ -29,6 +29,9 @@ public class Renderer3D {
         view = new Mat4ViewRH(e, d, u);
 
         projection = new Mat4PerspRH(Math.PI / 4, Raster.HEIGHT / (float) Raster.WIDTH, 1, 200);
+
+        //Orthogonální projekce -- zatim nikde nepouzito
+        projectionOR = new Mat4OrthoRH(Math.PI / 4, Raster.HEIGHT / (float) Raster.WIDTH, 1, 200);
     }
 
     public void add(Solid... solids) {
