@@ -1,5 +1,6 @@
 package Projekt02.controller;
 
+import Projekt02.model3D.Axis;
 import Projekt02.model3D.Solid;
 import Projekt02.view.Raster;
 import transforms.*;
@@ -44,16 +45,15 @@ public class Renderer3D {
             for (int j = 0; j < indices.size(); j = j + 2) {
                 Point3D a = vertices.get(indices.get(j));
                 Point3D b = vertices.get(indices.get(j + 1));
-                drawLine(a, b, solid.getColor(), false); //instanceOFF
+                drawLine(a, b, solid.getColor(), solid instanceof Axis); //instanceOff
             }
         }
     }
 
     public void drawLine(Point3D a, Point3D b, Color color, boolean isAxis) {
         if (isAxis) {
-
-            a = a.mul(model).mul(projection);
-            b = b.mul(model).mul(projection);
+            a = a.mul(view).mul(projection);
+            b = b.mul(view).mul(projection);
 
         } else {
 
