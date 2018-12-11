@@ -128,6 +128,9 @@ public class Controller3D {
         axisX = new AxisX(Color.RED);
         axisY = new AxisY(Color.GREEN);
         axisZ = new AxisZ(Color.BLUE);
+        renderer3D.add(new Spiral());
+        Cubic3D cubic = new Cubic3D();
+        cubic.create();
         renderer3D.add(cube, pyramid, axisX, axisY, axisZ);
         resetCamera();
     }

@@ -65,6 +65,8 @@ public class Renderer3D {
 
         }
 
+        if(a.getW() <= 0 || b.getW() <= 0) return;
+
         if (!a.dehomog().isPresent() || !b.dehomog().isPresent()) {
             return;
         }
